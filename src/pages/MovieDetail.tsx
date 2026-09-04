@@ -40,7 +40,7 @@ export const MovieDetail = () => {
   const { movie: info, episodes } = movie;
 
   return (
-    <div className="pb-20 bg-[#141414] min-h-screen">
+    <div className="pb-20 mt-20 bg-[#141414] min-h-screen">
       {/* Video Player Section */}
       <div className="w-full bg-black relative mt-[72px] md:mt-0">
         <div className="max-w-[1600px] mx-auto relative aspect-video md:aspect-[21/9] max-h-[85vh]">

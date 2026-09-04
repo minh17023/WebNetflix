@@ -56,9 +56,6 @@ export const Navbar = () => {
           </Link>
           <nav className="hidden md:flex gap-5 text-sm font-medium">
             <Link to="/" className="text-[#e5e5e5] hover:text-[#b3b3b3] transition-colors">Home</Link>
-            <Link to="/series" className="text-[#e5e5e5] hover:text-[#b3b3b3] transition-colors">Shows</Link>
-            <Link to="/movies" className="text-[#e5e5e5] hover:text-[#b3b3b3] transition-colors">Movies</Link>
-            
             <div className="relative" onMouseEnter={() => setActiveDropdown('the-loai')}>
               <button className="flex items-center text-[#e5e5e5] hover:text-[#b3b3b3] transition-colors">
                 Thể loại <ChevronDown className="w-4 h-4 ml-1" />
