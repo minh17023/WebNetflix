@@ -45,7 +45,7 @@ export const Navbar = () => {
 
   return (
     <header 
-      className={`fixed top-0 w-full z-50 transition-colors duration-500 ${isScrolled ? 'bg-[#141414]' : 'bg-gradient-to-b from-black/80 via-black/40 to-transparent'}`}
+      className={`fixed top-0 w-full z-50 transition-colors duration-500 ${isScrolled || isMobileMenuOpen ? 'bg-[#141414]' : 'bg-gradient-to-b from-black/80 via-black/40 to-transparent'}`}
       onMouseLeave={() => setActiveDropdown(null)}
     >
       <div className="px-4 md:px-12 flex items-center h-[68px]">
