@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Play, Info, ChevronLeft, ChevronRight } from 'lucide-react';
-import { getNewUpdatedMovies, getSeriesMovies, getSingleMovies, getAnimeMovies, getHomeMovies, getMovieDetails } from '../services/api';
+import { getSeriesMovies, getSingleMovies, getAnimeMovies, getHomeMovies, getMovieDetails } from '../services/api';
 import { MovieCard } from '../components/MovieCard';
 import { motion, AnimatePresence } from 'framer-motion';
 

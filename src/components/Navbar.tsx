@@ -52,7 +52,7 @@ export const Navbar = () => {
         {/* Logo and primary nav */}
         <div className="flex items-center gap-8">
           <Link to="/" className="text-[#E50914] text-2xl md:text-3xl font-black tracking-wider uppercase" style={{fontFamily: 'Arial, sans-serif'}}>
-            NETFLIX
+            PHIMFLIX
           </Link>
           <nav className="hidden md:flex gap-5 text-sm font-medium">
             <Link to="/" className="text-[#e5e5e5] hover:text-[#b3b3b3] transition-colors">Home</Link>

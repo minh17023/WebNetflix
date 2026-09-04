@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getMovieDetails } from '../services/api';
-import { Play, Calendar, Clock, Globe, Film } from 'lucide-react';
-import { motion } from 'framer-motion';
 
 export const MovieDetail = () => {
   const { slug } = useParams<{ slug: string }>();
