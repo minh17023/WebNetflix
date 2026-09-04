@@ -34,3 +34,18 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Custom scrollbar for small areas like episode list */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}

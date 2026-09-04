@@ -42,86 +42,101 @@ export const MovieDetail = () => {
   const { movie: info, episodes } = movie;
 
   return (
-    <div className="pb-20">
-      {/* Video Player / Backdrop Section */}
-      <div className="relative w-full aspect-video md:aspect-[21/9] bg-black max-h-[70vh]">
-        {currentEpisode ? (
-          <iframe 
-            src={currentEpisode.link_embed} 
-            className="w-full h-full"
-            allowFullScreen
-            title={info.name}
-          />
-        ) : (
-          <div className="absolute inset-0">
-            <img 
-              src={info.poster_url} 
-              alt={info.name}
-              className="w-full h-full object-cover opacity-30"
+    <div className="pb-20 bg-[#141414] min-h-screen">
+      {/* Video Player Section */}
+      <div className="w-full bg-black relative">
+        <div className="max-w-[1600px] mx-auto relative aspect-video md:aspect-[21/9] max-h-[85vh]">
+          {currentEpisode ? (
+            <iframe 
+              src={currentEpisode.link_embed} 
+              className="w-full h-full absolute inset-0"
+              allowFullScreen
+              title={info.name}
             />
-            <div className="absolute inset-0 flex items-center justify-center text-white">
-              No video available
+          ) : (
+            <div className="absolute inset-0">
+              <img 
+                src={info.poster_url} 
+                alt={info.name}
+                className="w-full h-full object-cover opacity-30"
+              />
+              <div className="absolute inset-0 flex items-center justify-center text-white">
+                No video available
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 mt-8 md:mt-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Main Info */}
-          <div className="md:col-span-2">
-            <h1 className="text-3xl md:text-5xl font-bold mb-2">{info.name}</h1>
-            <h2 className="text-xl text-gray-400 mb-6">{info.origin_name}</h2>
+          <div className="lg:col-span-2">
+            <h1 
+              className="text-3xl md:text-4xl text-white mb-2 drop-shadow-md"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700 }}
+            >
+              {info.name}
+            </h1>
+            <h2 className="text-lg text-gray-400 mb-6 font-medium italic">{info.origin_name}</h2>
             
-            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-300 mb-6">
-              <span className="flex items-center"><Calendar className="w-4 h-4 mr-1"/> {info.year}</span>
-              <span className="flex items-center"><Clock className="w-4 h-4 mr-1"/> {info.time}</span>
-              <span className="flex items-center"><Globe className="w-4 h-4 mr-1"/> {info.country?.[0]?.name}</span>
-              <span className="px-2 py-1 bg-surface rounded text-xs text-primary font-bold">{info.quality} {info.lang}</span>
+            <div className="flex flex-wrap items-center gap-3 text-sm text-gray-300 mb-8 font-medium">
+              <span className="text-green-500 font-bold">98% Match</span>
+              <span>{info.year}</span>
+              <span className="px-1.5 py-0.5 border border-gray-600 rounded text-xs">{info.time}</span>
+              <span className="px-1.5 py-0.5 border border-gray-600 rounded text-xs text-white">{info.quality}</span>
+              <span className="px-1.5 py-0.5 border border-gray-600 rounded text-xs">{info.lang}</span>
             </div>
             
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold mb-2 border-b border-gray-700 pb-2">Overview</h3>
-              <div className="text-gray-300 leading-relaxed text-sm md:text-base" dangerouslySetInnerHTML={{ __html: info.content }}></div>
+            <div className="text-gray-200 text-sm md:text-base leading-relaxed mb-8">
+              <div dangerouslySetInnerHTML={{ __html: info.content }} />
             </div>
 
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold mb-2 border-b border-gray-700 pb-2">Genres</h3>
-              <div className="flex flex-wrap gap-2">
-                {info.category?.map((c: any) => (
-                  <span key={c.id} className="px-3 py-1 bg-surface rounded-full text-sm text-gray-300">{c.name}</span>
+            <div className="flex flex-col gap-3 text-sm text-gray-400 border-t border-gray-800 pt-6">
+              <p><span className="text-gray-500">Quốc gia:</span> <span className="text-white hover:underline cursor-pointer">{info.country?.[0]?.name}</span></p>
+              <p>
+                <span className="text-gray-500">Thể loại:</span>{' '}
+                {info.category?.map((c: any, i: number) => (
+                  <span key={c.id}>
+                    <span className="text-white hover:underline cursor-pointer">{c.name}</span>
+                    {i < info.category.length - 1 ? ', ' : ''}
+                  </span>
                 ))}
-              </div>
+              </p>
+              {info.actor && info.actor[0] !== "Đang cập nhật" && (
+                <p><span className="text-gray-500">Diễn viên:</span> <span className="text-white">{info.actor.join(', ')}</span></p>
+              )}
             </div>
           </div>
 
-          {/* Sidebar Info */}
-          <div className="bg-surface rounded-lg p-6 h-fit">
-            <h3 className="text-lg font-semibold mb-4 border-b border-gray-700 pb-2 flex items-center">
-              <Film className="w-5 h-5 mr-2" />
-              Episodes
-            </h3>
-            
-            {episodes && episodes.map((server: any, idx: number) => (
-              <div key={idx} className="mb-4">
-                <p className="text-sm text-gray-400 mb-2">{server.server_name}</p>
-                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                  {server.server_data.map((ep: any) => (
-                    <button
-                      key={ep.slug}
-                      onClick={() => setCurrentEpisode(ep)}
-                      className={`py-1.5 px-2 rounded text-xs md:text-sm transition-colors ${
-                        currentEpisode?.slug === ep.slug 
-                          ? 'bg-primary text-white font-bold' 
-                          : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                      }`}
-                    >
-                      {ep.name}
-                    </button>
-                  ))}
+          {/* Sidebar Info (Episodes) */}
+          <div className="lg:col-span-1">
+            <div className="bg-[#181818] rounded-md p-6 sticky top-24 shadow-lg border border-gray-800/50">
+              <h3 className="text-xl font-bold text-white mb-6 flex items-center">
+                Danh sách tập
+              </h3>
+              
+              {episodes && episodes.map((server: any, idx: number) => (
+                <div key={idx} className="mb-6 last:mb-0">
+                  <p className="text-sm font-bold text-gray-400 mb-3 uppercase tracking-wider">{server.server_name}</p>
+                  <div className="grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-4 gap-2 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                    {server.server_data.map((ep: any) => (
+                      <button
+                        key={ep.slug}
+                        onClick={() => setCurrentEpisode(ep)}
+                        className={`py-2 px-1 rounded flex items-center justify-center text-sm font-medium transition-all ${
+                          currentEpisode?.slug === ep.slug 
+                            ? 'bg-[#E50914] text-white shadow-md transform scale-105' 
+                            : 'bg-[#2b2b2b] text-gray-300 hover:bg-gray-200 hover:text-black'
+                        }`}
+                      >
+                        {ep.name.replace('Tập ', '')}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>
