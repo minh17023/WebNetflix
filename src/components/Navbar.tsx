@@ -41,7 +41,7 @@ export const Navbar = () => {
         {/* Logo and primary nav */}
         <div className="flex items-center gap-8">
           <Link to="/" className="text-[#E50914] text-2xl md:text-3xl font-black tracking-wider uppercase" style={{fontFamily: 'Arial, sans-serif'}}>
-            NETFLIX
+            PHIMFLIX
           </Link>
           <nav className="hidden md:flex gap-5 text-sm font-medium">
             {navLinks.map((link, idx) => (
