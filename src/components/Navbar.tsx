@@ -154,9 +154,9 @@ export const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-[#141414] border-t border-gray-800 p-4"
+            className="md:hidden bg-[#141414] border-t border-gray-800 absolute top-[68px] left-0 w-full overflow-y-auto overscroll-contain max-h-[calc(100vh-68px)] shadow-2xl"
           >
-            <nav className="flex flex-col space-y-4 max-h-[70vh] overflow-y-auto custom-scrollbar pr-2 pb-4">
+            <nav className="flex flex-col space-y-4 p-4 pb-8">
               <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-medium text-lg">Home</Link>
               <Link to="/series" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-medium text-lg">Shows</Link>
               <Link to="/movies" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-medium text-lg">Movies</Link>
