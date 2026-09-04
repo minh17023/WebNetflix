@@ -12,20 +12,18 @@ export const MovieCard = ({ item, pathPrefix = 'phim' }: MovieCardProps) => {
   const thumbUrl = imageUrl.startsWith('http') ? imageUrl : `https://phimimg.com/${imageUrl}`;
   
   return (
-    <Link to={`/${pathPrefix}/${item.slug}`}>
+    <Link to={`/${pathPrefix}/${item.slug}`} className="block">
       <motion.div 
         whileHover={{ scale: 1.05, zIndex: 10 }}
         transition={{ duration: 0.3 }}
-        className="relative group rounded-md overflow-hidden bg-[#181818] cursor-pointer h-full"
+        className="relative group rounded-md overflow-hidden bg-[#181818] cursor-pointer aspect-video w-full"
       >
-        <div className="aspect-video w-full">
-          <img 
-            src={thumbUrl} 
-            alt={item.name} 
-            className="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-60"
-            loading="lazy"
-          />
-        </div>
+        <img 
+          src={thumbUrl} 
+          alt={item.name} 
+          className="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-60"
+          loading="lazy"
+        />
         
         {/* Hover Info */}
         <div className="absolute inset-0 flex flex-col justify-end p-3 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">

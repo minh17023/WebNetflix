@@ -12,7 +12,7 @@ export const getSingleMovies = (page = 1) => api.get(`/v1/api/danh-sach/phim-le?
 export const getAnimeMovies = (page = 1) => api.get(`/v1/api/danh-sach/hoat-hinh?page=${page}`);
 export const getTvShows = (page = 1) => api.get(`/v1/api/danh-sach/tv-shows?page=${page}`);
 export const getMovieDetails = (slug: string) => api.get(`/phim/${slug}`);
-export const searchMovies = (keyword: string, limit = 10) => api.get(`/v1/api/tim-kiem?keyword=${keyword}&limit=${limit}`);
+export const searchMovies = (keyword: string, limit = 24, page = 1) => api.get(`/v1/api/tim-kiem?keyword=${keyword}&limit=${limit}&page=${page}`);
 export const getCategories = () => api.get('/the-loai');
 export const getCountries = () => api.get('/quoc-gia');
 export const getMoviesByCategory = (slug: string, page = 1) => api.get(`/v1/api/the-loai/${slug}?page=${page}`);

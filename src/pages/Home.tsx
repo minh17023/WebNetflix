@@ -118,7 +118,7 @@ export const Home = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="text-3xl md:text-5xl lg:text-6xl font-black text-white mb-2 md:mb-4 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] line-clamp-2 md:line-clamp-3"
-              style={{ fontFamily: "'Playfair Display', serif", lineHeight: 1.1 }}
+              style={{ lineHeight: 1.1 }}
             >
               {heroMovie.name}
             </motion.h1>

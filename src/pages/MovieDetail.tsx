@@ -70,10 +70,7 @@ export const MovieDetail = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Main Info */}
           <div className="lg:col-span-2">
-            <h1 
-              className="text-3xl md:text-4xl text-white mb-2 drop-shadow-md"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700 }}
-            >
+            <h1 className="text-3xl md:text-4xl text-white mb-2 drop-shadow-md font-bold tracking-tight">
               {info.name}
             </h1>
             <h2 className="text-lg text-gray-400 mb-6 font-medium italic">{info.origin_name}</h2>
