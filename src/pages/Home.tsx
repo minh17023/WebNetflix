@@ -58,6 +58,14 @@ export const Home = () => {
     setCurrentHeroIndex((prev) => (prev - 1 + heroMovies.length) % heroMovies.length);
   };
 
+  useEffect(() => {
+    if (heroMovies.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentHeroIndex((prev) => (prev + 1) % heroMovies.length);
+    }, 10000);
+    return () => clearInterval(interval);
+  }, [heroMovies.length]);
+
   if (loading) {
     return <div className="flex items-center justify-center min-h-screen bg-[#141414]"><div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#E50914]"></div></div>;
   }
@@ -68,7 +76,7 @@ export const Home = () => {
     <div className="pb-10 bg-[#141414] min-h-screen">
       {/* Hero Section */}
       {heroMovie && (
-        <div className="relative h-[85vh] w-full group/hero">
+        <div className="relative h-[65vh] md:h-[85vh] w-full group/hero overflow-hidden">
           <AnimatePresence mode='wait'>
             <motion.div 
               key={heroMovie._id || heroMovie.slug}
@@ -78,46 +86,50 @@ export const Home = () => {
               transition={{ duration: 0.8 }}
               className="absolute inset-0"
             >
-              <img 
-                src={(heroMovie.thumb_url || heroMovie.poster_url)?.startsWith('http') ? (heroMovie.thumb_url || heroMovie.poster_url) : `https://phimimg.com/${heroMovie.thumb_url || heroMovie.poster_url}`} 
-                alt={heroMovie.name}
-                className="w-full h-full object-cover object-center md:object-[center_20%]"
-              />
+              <picture>
+                <source media="(min-width: 768px)" srcSet={(heroMovie.thumb_url || heroMovie.poster_url)?.startsWith('http') ? (heroMovie.thumb_url || heroMovie.poster_url) : `https://phimimg.com/${heroMovie.thumb_url || heroMovie.poster_url}`} />
+                <img 
+                  src={(heroMovie.poster_url || heroMovie.thumb_url)?.startsWith('http') ? (heroMovie.poster_url || heroMovie.thumb_url) : `https://phimimg.com/${heroMovie.poster_url || heroMovie.thumb_url}`} 
+                  alt={heroMovie.name}
+                  className="w-full h-full object-cover object-top md:object-[center_20%]"
+                />
+              </picture>
               {/* Dark vignette left and bottom */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/40 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 h-48 md:h-64 bg-gradient-to-t from-[#141414] via-[#141414]/80 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#141414] via-[#141414]/60 to-transparent md:bg-none" />
+              <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-black/90 via-black/40 to-transparent" />
+              <div className="hidden md:block absolute inset-x-0 bottom-0 h-48 md:h-64 bg-gradient-to-t from-[#141414] via-[#141414]/80 to-transparent" />
             </motion.div>
           </AnimatePresence>
           
           {/* Banner Controls */}
           {heroMovies.length > 1 && (
             <>
-              <button onClick={prevHero} className="absolute left-4 top-1/2 -translate-y-1/2 z-30 bg-black/30 hover:bg-black/60 p-2 rounded-full opacity-0 group-hover/hero:opacity-100 transition-opacity">
+              <button onClick={prevHero} className="hidden md:block absolute left-4 top-1/2 -translate-y-1/2 z-30 bg-black/30 hover:bg-black/60 p-2 rounded-full opacity-0 group-hover/hero:opacity-100 transition-opacity">
                 <ChevronLeft className="text-white w-8 h-8" />
               </button>
-              <button onClick={nextHero} className="absolute right-4 top-1/2 -translate-y-1/2 z-30 bg-black/30 hover:bg-black/60 p-2 rounded-full opacity-0 group-hover/hero:opacity-100 transition-opacity">
+              <button onClick={nextHero} className="hidden md:block absolute right-4 top-1/2 -translate-y-1/2 z-30 bg-black/30 hover:bg-black/60 p-2 rounded-full opacity-0 group-hover/hero:opacity-100 transition-opacity">
                 <ChevronRight className="text-white w-8 h-8" />
               </button>
               
-              <div className="absolute bottom-[10%] right-12 z-30 flex gap-2">
+              <div className="absolute bottom-[5%] md:bottom-[10%] right-1/2 translate-x-1/2 md:translate-x-0 md:right-12 z-30 flex gap-1.5 md:gap-2">
                 {heroMovies.map((_, idx) => (
-                  <div key={idx} className={`w-2.5 h-2.5 rounded-full ${idx === currentHeroIndex ? 'bg-white' : 'bg-gray-500/50'}`} />
+                  <div key={idx} className={`w-2 h-2 md:w-2.5 md:h-2.5 rounded-full transition-all ${idx === currentHeroIndex ? 'bg-white scale-125' : 'bg-gray-500/50'}`} />
                 ))}
               </div>
             </>
           )}
 
-          <div className="absolute bottom-[20%] md:bottom-[25%] left-4 md:left-12 max-w-xl md:max-w-2xl z-10 pointer-events-none">
-            <div className="flex items-center gap-2 mb-2 md:mb-4">
-               <span className="text-[#E50914] text-2xl md:text-4xl font-black tracking-widest">N</span>
-               <span className="text-gray-300 text-xs md:text-sm tracking-[0.3em] font-bold shadow-black drop-shadow-md">S E R I E S</span>
+          <div className="absolute bottom-[10%] md:bottom-[25%] left-4 md:left-12 max-w-[90%] md:max-w-2xl z-10 pointer-events-none">
+            <div className="flex items-center gap-2 mb-1 md:mb-4">
+               <span className="text-[#E50914] text-xl md:text-4xl font-black tracking-widest">N</span>
+               <span className="text-gray-300 text-[10px] md:text-sm tracking-[0.3em] font-bold shadow-black drop-shadow-md">S E R I E S</span>
             </div>
             
             <motion.h1 
               key={`title-${heroMovie._id}`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-3xl md:text-5xl lg:text-6xl font-black text-white mb-2 md:mb-4 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] line-clamp-2 md:line-clamp-3"
+              className="text-2xl md:text-5xl lg:text-6xl font-black text-white mb-2 md:mb-4 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] line-clamp-2 md:line-clamp-3"
               style={{ lineHeight: 1.1 }}
             >
               {heroMovie.name}
