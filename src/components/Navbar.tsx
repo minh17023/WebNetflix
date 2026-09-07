@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Bell, Menu, X, ChevronDown } from 'lucide-react';
+import { Search, Bell, Menu, X, ChevronDown, Clock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getCategories, getCountries } from '../services/api';
 
@@ -11,6 +11,8 @@ export const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [categories, setCategories] = useState<any[]>([]);
   const [countries, setCountries] = useState<any[]>([]);
+  const [searchHistory, setSearchHistory] = useState<string[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
   
   // Dropdown states
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -29,15 +31,30 @@ export const Navbar = () => {
       setCountries(countRes.data.data?.items || countRes.data || []);
     }).catch(err => console.error(err));
 
+    const savedHistory = localStorage.getItem('phimflix_search_history');
+    if (savedHistory) {
+      try {
+        setSearchHistory(JSON.parse(savedHistory));
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleSearch = (e?: React.FormEvent | React.KeyboardEvent) => {
+  const handleSearch = (e?: React.FormEvent | React.KeyboardEvent, query?: string) => {
     if (e) e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+    const q = query || searchQuery;
+    if (q.trim()) {
+      const newHistory = [q.trim(), ...searchHistory.filter(item => item !== q.trim())].slice(0, 5);
+      setSearchHistory(newHistory);
+      localStorage.setItem('phimflix_search_history', JSON.stringify(newHistory));
+
+      navigate(`/search?q=${encodeURIComponent(q)}`);
       setSearchQuery('');
       setIsSearchOpen(false);
+      setShowHistory(false);
     }
   };
 
@@ -111,7 +128,7 @@ export const Navbar = () => {
         {/* Right nav & Mobile Menu Button */}
         <div className="ml-auto flex items-center gap-6">
           {/* Search bar */}
-          <div className="relative">
+          <div className="relative flex flex-col">
             <div className={`flex items-center bg-black/50 border transition-all duration-300 ${isSearchOpen ? 'border-white px-2 py-1 w-48 md:w-64' : 'border-transparent w-0'}`}>
               <button onClick={() => setIsSearchOpen(!isSearchOpen)} className="text-white hover:text-gray-300">
                 <Search className="w-5 h-5 md:w-6 md:h-6" />
@@ -122,12 +139,42 @@ export const Navbar = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSearch(e)}
+                  onFocus={() => setShowHistory(true)}
+                  onBlur={() => setTimeout(() => setShowHistory(false), 200)}
                   placeholder="Titles, people, genres" 
                   className="bg-transparent text-white text-sm outline-none w-full ml-2"
                   autoFocus
                 />
               )}
             </div>
+
+            {/* Search History Dropdown */}
+            {isSearchOpen && showHistory && searchHistory.length > 0 && (
+              <div className="absolute top-full right-0 mt-2 w-full md:w-64 bg-black/95 border border-gray-800 rounded py-2 shadow-2xl z-50">
+                <div className="px-3 pb-1 text-xs text-gray-500 font-medium uppercase tracking-wider mb-1">Lịch sử tìm kiếm</div>
+                {searchHistory.map((item, idx) => (
+                  <div 
+                    key={idx} 
+                    className="flex items-center justify-between px-3 py-2 hover:bg-gray-800 cursor-pointer text-sm transition-colors group"
+                    onClick={() => handleSearch(undefined, item)}
+                  >
+                    <div className="flex items-center text-gray-300 group-hover:text-white truncate">
+                      <Clock className="w-4 h-4 mr-2 flex-shrink-0" />
+                      <span className="truncate">{item}</span>
+                    </div>
+                    <X 
+                      className="w-4 h-4 text-gray-500 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity" 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const newHist = searchHistory.filter(h => h !== item);
+                        setSearchHistory(newHist);
+                        localStorage.setItem('phimflix_search_history', JSON.stringify(newHist));
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <button className="hidden md:block text-white hover:text-gray-300">
