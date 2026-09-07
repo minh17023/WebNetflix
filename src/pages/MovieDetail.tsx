@@ -21,6 +21,16 @@ export const MovieDetail = () => {
             setCurrentEpisode(firstServer.server_data[0]);
           }
         }
+        
+        // Save to watched history
+        if (res.data.movie) {
+          const watchedStr = localStorage.getItem('phimflix_watched_history');
+          let watchedHistory = watchedStr ? JSON.parse(watchedStr) : [];
+          watchedHistory = watchedHistory.filter((m: any) => m.slug !== res.data.movie.slug);
+          watchedHistory.unshift(res.data.movie);
+          watchedHistory = watchedHistory.slice(0, 20);
+          localStorage.setItem('phimflix_watched_history', JSON.stringify(watchedHistory));
+        }
         setLoading(false);
       } catch (error) {
         console.error("Error fetching detail:", error);

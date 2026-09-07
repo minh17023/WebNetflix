@@ -12,6 +12,7 @@ export const Home = () => {
   const [series, setSeries] = useState([]);
   const [movies, setMovies] = useState([]);
   const [anime, setAnime] = useState([]);
+  const [watchedMovies, setWatchedMovies] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -48,6 +49,15 @@ export const Home = () => {
       }
     };
     fetchHomeData();
+
+    const watchedStr = localStorage.getItem('phimflix_watched_history');
+    if (watchedStr) {
+      try {
+        setWatchedMovies(JSON.parse(watchedStr));
+      } catch (e) {
+        console.error("Error parsing watched history:", e);
+      }
+    }
   }, []);
 
   const nextHero = () => {
@@ -172,6 +182,9 @@ export const Home = () => {
 
       {/* Movie Rows */}
       <div className="pl-4 md:pl-12 -mt-12 md:-mt-16 relative z-20 space-y-8 md:space-y-12">
+        {watchedMovies.length > 0 && (
+          <MovieRow title="Phim đã xem" movies={watchedMovies} isLarge={false} />
+        )}
         <MovieRow title="Crowd Pleasers" movies={newMovies} isLarge={true} />
         <MovieRow title="Trending Now" movies={series} />
         <MovieRow title="New Releases" movies={movies} />
