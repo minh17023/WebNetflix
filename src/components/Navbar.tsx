@@ -177,16 +177,7 @@ export const Navbar = () => {
             )}
           </div>
 
-          <button className="hidden md:block text-white hover:text-gray-300">
-            <Bell className="w-5 h-5 md:w-6 md:h-6" />
-          </button>
-          
-          <div className="hidden md:flex items-center gap-2 cursor-pointer group">
-            <div className="w-8 h-8 rounded bg-gray-600 overflow-hidden">
-               <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png" alt="Avatar" className="w-full h-full object-cover" />
-            </div>
-            <span className="text-white text-xs border-transparent border-t-4 border-l-4 border-r-4 border-t-white mt-2 hidden md:block group-hover:rotate-180 transition-transform" style={{width: 0, height: 0, borderLeftColor: 'transparent', borderRightColor: 'transparent'}}></span>
-          </div>
+
 
           <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden text-white ml-4">
             {isMobileMenuOpen ? <X /> : <Menu />}
